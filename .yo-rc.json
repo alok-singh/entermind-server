@@ -1,0 +1,16 @@
+{
+  "generator-astro-sls": {
+    "name": "entermind-server",
+    "apibase": "handler",
+    "apiversion": "v1",
+    "version": "1.0.0",
+    "description": "Server to accept cost and revenue related data",
+    "author": "Alok",
+    "src": "src",
+    "last_endpoint": "create-usage",
+    "last_apidesc": "create usage",
+    "last_method": "post",
+    "last_handlerType": "true",
+    "last_handlerrequire": "true"
+  }
+}

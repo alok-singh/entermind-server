@@ -1,0 +1,16 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9
+  },
+  "settings": {
+    "import/resolver": "module-alias"
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": "off"
+  }
+}

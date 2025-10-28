@@ -1,0 +1,92 @@
+service: entermind-server # NOTE: update this with your service name
+
+variablesResolutionMode: 20210326
+
+custom:
+  stage: dev
+  settings:
+    dev:
+      STAGE: ${self:custom.stage}
+      NODE_ENV: "develop"
+    stg:
+      STAGE: ${self:custom.stage}
+      NODE_ENV: "staging"
+    prod:
+      STAGE: ${self:custom.stage}
+      NODE_ENV: "production"
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  region: ap-southeast-1
+  runtime: nodejs18.x
+  environment: ${self:custom.settings.${self:custom.stage}}
+  lambdaHashingVersion: 20201221
+
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "xray:PutTraceSegments"
+            - "xray:PutTelemetryRecords"
+          Resource:
+            - "*"
+
+functions:
+  hello:
+    handler: src/index.hello
+    tracing: true
+    events:
+      - http:
+          method: get
+          path: v1/hello
+  getCost:
+    handler: src/index.getCost
+    tracing: true
+    events:
+      - http:
+          method: get
+          path: v1/get-cost
+  createCost:
+    handler: src/index.createCost
+    tracing: true
+    events:
+      - http:
+          method: post
+          path: v1/create-cost
+          cors:
+            origin: "*"
+            headers:
+              - "Authorization"
+              - "Content-Type"
+  createRoi:
+    handler: src/index.createRoi
+    tracing: true
+    events:
+      - http:
+          method: post
+          path: v1/create-roi
+  createUsage:
+    handler: src/index.createUsage
+    tracing: true
+    events:
+      - http:
+          method: post
+          path: v1/create-usage
+  getRoi:
+    handler: src/index.getRoi
+    tracing: true
+    events:
+      - http:
+          method: get
+          path: v1/get-roi
+  getUsage:
+    handler: src/index.getUsage
+    tracing: true
+    events:
+      - http:
+          method: get
+          path: v1/get-usage
