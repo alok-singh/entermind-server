@@ -90,3 +90,11 @@ functions:
       - http:
           method: get
           path: v1/get-usage
+  getTransaction:
+    handler: src/index.getTransaction
+    tracing: true
+    events:
+      - http:
+          method: get
+          path: v1/get-transactions
+

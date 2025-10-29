@@ -1,26 +1,12 @@
-const { categories } = require('@config/vars');
 const Joi = require('joi');
 
 module.exports = {
-  name: 'createCost',
-  description: 'create cost information',
-  path: '/v1/createCost',
-  type: 'post',
+  name: 'getTransaction',
+  description: 'get transaction',
+  path: '/v1/getTransaction',
+  type: 'get',
   joiSchema: {
-    body: Joi.object().keys({
-      client: Joi.string().required(),
-      data: Joi.array().items(Joi.object().keys({
-        date: Joi.date().timestamp('javascript').required(),
-        vendor: Joi.string().required(),
-        category: Joi.string().valid(...categories).required(),
-        subcategory: Joi.string().required(),
-        amount: Joi.number().required(),
-        units: Joi.number().required(),
-        project: Joi.string().required(),
-        tags: Joi.string().required(),
-        notes: Joi.string(),
-      })).required(),
-    }).options({ allowUnknown: true }),
+    body: {},
     response: {
       200: {
         description: 'OK',

@@ -10,7 +10,7 @@ exports.getRoi = async (event) => {
   try {
     const { client } = event.queryStringParameters;
     const data = await getDatabaseInfo(client, roiFileName);
-    return OK("Success", { message: "Successfully retrieved data", response: data });
+    return OK("Success", { message: "Successfully retrieved data", data });
   } catch (error) {
     console.log(error);
     return OK("Failure", { message: error.message })

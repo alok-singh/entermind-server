@@ -7,9 +7,9 @@
     "description": "Server to accept cost and revenue related data",
     "author": "Alok",
     "src": "src",
-    "last_endpoint": "create-usage",
-    "last_apidesc": "create usage",
-    "last_method": "post",
+    "last_endpoint": "getTransaction",
+    "last_apidesc": "get transaction",
+    "last_method": "get",
     "last_handlerType": "true",
     "last_handlerrequire": "true"
   }

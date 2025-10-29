@@ -19,7 +19,7 @@ module.exports = {
         confidence: Joi.string().required(),
         mechanism: Joi.string().required(),
         agents: Joi.string().required(),
-        notes: Joi.string().required(),
+        notes: Joi.string(),
       })).required()
     }).options({ allowUnknown: true }),
     response: {

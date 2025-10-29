@@ -1,3 +1,6 @@
+const { transactionFileName } = require('@config/vars');
+const { randomUUID } = require('crypto');
+
 const fs = require('fs').promises;
 
 const getFileContent = async (filePath) => {
@@ -6,10 +9,14 @@ const getFileContent = async (filePath) => {
 };
 
 const writeDatabaseInfo = async (clientId, fileName, content) => {
+  const transactionId = randomUUID();
   const filePath = `./data/${clientId}/${fileName}.json`;
-  const data = await getFileContent(filePath);
-  data.push(...content);
-  await fs.writeFile(filePath, JSON.stringify(data));
+  const transactionFilePath = `./data/${clientId}/${transactionFileName}.json`;
+  const [data, transaction] = await Promise.all([getFileContent(filePath), getFileContent(transactionFilePath)]);
+  data.push(...content.map(item => ({ ...item, transactionId })));
+  transaction.push({ timestamp: new Date().toISOString(), type: fileName, transactionId });
+  
+  await Promise.all([fs.writeFile(filePath, JSON.stringify(data)), fs.writeFile(transactionFilePath, JSON.stringify(transaction))]);
 };
 
 const getDatabaseInfo = async (clientId, fileName) => {

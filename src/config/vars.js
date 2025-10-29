@@ -12,7 +12,8 @@ module.exports = {
   costFileName: 'cost',
   roiFileName: 'roi',
   usageFileName: 'usage',
-  categories: ['AI Model Costs', 'Infrastructure & Compute', 'Agent Platform Licenses', 'Talent Costs', 'Data & Integration'],
+  transactionFileName: 'transactions',
+  categories: ['AI Model Costs', 'Infrastructure & Compute', 'Agent Platform Licenses', 'Talent Costs', 'Data & Integration', 'Revenue Growth', 'Cost Reduction', 'Operational Efficiency'],
   http: {
     // Axios configuration to make http call
     timeout: 20000, // Timeout in ms
