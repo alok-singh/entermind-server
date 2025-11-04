@@ -1,4 +1,4 @@
 const { OK } = require('./helper.util');
-const { writeDatabaseInfo, getDatabaseInfo } = require('./database.util');
-
-module.exports = { OK, writeDatabaseInfo, getDatabaseInfo };
+const { writeCostToDatabase, writeRoiToDatabase, writeUsageToDatabase, getAllCostInfo, getAllRoiInfo, getAllUsageInfo, getAllTransactionsInfo } = require('./database.util');
+const validator = require('./validator.util');
+module.exports = { OK, writeCostToDatabase, writeRoiToDatabase, writeUsageToDatabase, getAllCostInfo, getAllRoiInfo, getAllUsageInfo, getAllTransactionsInfo, validator };

@@ -9,6 +9,7 @@ const createUsage = require('./handler/v1/createUsage');
 const getRoi = require('./handler/v1/getRoi');
 const getUsage = require('./handler/v1/getUsage');
 const getTransaction = require('./handler/v1/getTransaction');
+const uploadFile = require('./handler/v1/uploadFile');
 
 module.exports = {
   hello: helloRoute,
@@ -18,5 +19,6 @@ module.exports = {
   createUsage: createUsage,
   getRoi: getRoi,
   getUsage: getUsage,
-  getTransaction: getTransaction
+  getTransaction: getTransaction,
+  uploadFile: uploadFile
 };

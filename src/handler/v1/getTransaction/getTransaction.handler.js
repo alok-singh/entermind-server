@@ -1,5 +1,5 @@
 const { transactionFileName } = require('@config/vars');
-const { OK, getDatabaseInfo } = require('@utils/helper');
+const { OK, getDatabaseInfo, getAllTransactionsInfo } = require('@utils/helper');
 const logger = require('@utils/logger');
 
 /**
@@ -9,11 +9,9 @@ const logger = require('@utils/logger');
 exports.getTransaction = async (event) => {
   try {
     const { client } = event.queryStringParameters;
-    const data = await getDatabaseInfo(client, transactionFileName);
+    const data = await getAllTransactionsInfo(client);
     return OK("Success", {
-      message: "Successfully retrieved data", data: data.sort((a, b) => {
-        return new Date(a.timestamp) - new Date(a.timestamp) > 0 ? 1 : -1;
-      })
+      message: "Successfully retrieved data", data
     });
   } catch (error) {
     console.log(error);

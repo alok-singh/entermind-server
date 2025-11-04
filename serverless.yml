@@ -97,4 +97,11 @@ functions:
       - http:
           method: get
           path: v1/get-transactions
+  uploadFile:
+    handler: src/index.uploadFile
+    tracing: true
+    events:
+      - http:
+          method: post
+          path: v1/upload-file
 

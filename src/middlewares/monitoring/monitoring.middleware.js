@@ -8,6 +8,8 @@ const sendMonitoringLogs = async (request) => {
   try {
     const { event, context, response } = request;
     const { body } = response;
+    const isFileRequest = typeof body === 'string';
+    event.body = isFileRequest ? 'file' : event.body;
     const logData = {
       request: event,
       context,

@@ -1,5 +1,6 @@
-const { categories } = require('@config/vars');
 const Joi = require('joi');
+const { roiFields } = require('@config/vars');
+const { validator } = require('@utils/helper');
 
 module.exports = {
   name: 'createRoi',
@@ -9,18 +10,10 @@ module.exports = {
   joiSchema: {
     body: Joi.object().keys({
       client: Joi.string().required(),
-      data: Joi.array().items(Joi.object().keys({
-        date: Joi.date().timestamp('javascript').required(),
-        initiative: Joi.string().required(),
-        category: Joi.string().valid(...categories).required(),
-        valueType: Joi.string().required(),
-        amount: Joi.number().required(),
-        kpi: Joi.string().required(),
-        confidence: Joi.string().required(),
-        mechanism: Joi.string().required(),
-        agents: Joi.string().required(),
-        notes: Joi.string(),
-      })).required()
+      data: Joi.array().items(Joi.object().keys(roiFields.reduce((acc, key) => {
+        acc[key.name] = validator[key.type](key.required);
+        return acc;
+      }, {}))).required(),
     }).options({ allowUnknown: true }),
     response: {
       200: {

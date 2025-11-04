@@ -1,5 +1,4 @@
-const { costFileName } = require('@config/vars');
-const { OK, getDatabaseInfo } = require('@utils/helper');
+const { OK, getAllCostInfo } = require('@utils/helper');
 
 /**
  * cost
@@ -8,10 +7,9 @@ const { OK, getDatabaseInfo } = require('@utils/helper');
 exports.getCost = async (event) => {
   try {
     const { client } = event.queryStringParameters;
-    const data = await getDatabaseInfo(client, costFileName);
+    const data = await getAllCostInfo(client);
     return OK("Success", { message: "Successfully retrieved data", data });
   } catch (error) {
-    console.log(error);
     return OK("Failure", { message: error.message })
   }
 };

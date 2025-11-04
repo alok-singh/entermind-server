@@ -1,5 +1,6 @@
-const { categories } = require('@config/vars');
+const { costFields } = require('@config/vars');
 const Joi = require('joi');
+const { validator } = require('@utils/helper')
 
 module.exports = {
   name: 'createCost',
@@ -9,17 +10,10 @@ module.exports = {
   joiSchema: {
     body: Joi.object().keys({
       client: Joi.string().required(),
-      data: Joi.array().items(Joi.object().keys({
-        date: Joi.date().timestamp('javascript').required(),
-        vendor: Joi.string().required(),
-        category: Joi.string().valid(...categories).required(),
-        subcategory: Joi.string().required(),
-        amount: Joi.number().required(),
-        units: Joi.number(),
-        project: Joi.string(),
-        tags: Joi.string(),
-        notes: Joi.string(),
-      })).required(),
+      data: Joi.array().items(Joi.object().keys(costFields.reduce((acc, key) => {
+        acc[key.name] = validator[key.type](key.required);
+        return acc;
+      }, {}))).required(),
     }).options({ allowUnknown: true }),
     response: {
       200: {

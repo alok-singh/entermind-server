@@ -1,27 +1,51 @@
-const { transactionFileName } = require('@config/vars');
 const { randomUUID } = require('crypto');
+const { transactionTypes } = require("@config/vars");
+const { costModel } = require("@utils/mysql");
+const { transactionModel } = require("@utils/mysql/transaction.modal");
+const { roiModel } = require('@utils/mysql/roi.modal');
+const { usageModel } = require('@utils/mysql/usage.modal');
 
-const fs = require('fs').promises;
+const generateTransactionData = (transactionId, transactionType, client) => {
+  return { date: new Date(), type: transactionTypes[transactionType], id: transactionId, client };
+}
 
-const getFileContent = async (filePath) => {
-  const data = await fs.readFile(filePath);
-  return JSON.parse(data.toString('utf-8'));
-};
-
-const writeDatabaseInfo = async (clientId, fileName, content) => {
+const writeCostToDatabase = async (client, costList) => {
   const transactionId = randomUUID();
-  const filePath = `./data/${clientId}/${fileName}.json`;
-  const transactionFilePath = `./data/${clientId}/${transactionFileName}.json`;
-  const [data, transaction] = await Promise.all([getFileContent(filePath), getFileContent(transactionFilePath)]);
-  data.push(...content.map(item => ({ ...item, transactionId })));
-  transaction.push({ timestamp: new Date().toISOString(), type: fileName, transactionId });
-  
-  await Promise.all([fs.writeFile(filePath, JSON.stringify(data)), fs.writeFile(transactionFilePath, JSON.stringify(transaction))]);
+  const transactionData = generateTransactionData(transactionId, transactionTypes.COST, client);
+  await Promise.all([costModel.createCost(transactionId, client, costList), transactionModel.createTransaction(transactionData)]);
 };
 
-const getDatabaseInfo = async (clientId, fileName) => {
-  const data = await getFileContent(`./data/${clientId}/${fileName}.json`);
-  return data;
+const writeRoiToDatabase = async (client, roiList) => {
+  const transactionId = randomUUID();
+  const transactionData = generateTransactionData(transactionId, transactionTypes.ROI, client);
+  await Promise.all([roiModel.createRoi(transactionId, client, roiList), transactionModel.createTransaction(transactionData)]);
 };
 
-module.exports = { writeDatabaseInfo, getDatabaseInfo };
+const writeUsageToDatabase = async (client, usageList) => {
+  const transactionId = randomUUID();
+  const transactionData = generateTransactionData(transactionId, transactionTypes.USAGE, client);
+  await Promise.all([usageModel.createUsage(transactionId, client, usageList), transactionModel.createTransaction(transactionData)]);
+};
+
+const getAllCostInfo = async (client) => {
+  const result = await costModel.getAllCosts(client);
+  return result;
+};
+
+const getAllRoiInfo = async (client) => {
+  const result = await roiModel.getAllRoi(client);
+  return result;
+};
+
+const getAllUsageInfo = async (client) => {
+  const result = await usageModel.getAllUsage(client);
+  return result;
+};
+
+const getAllTransactionsInfo = async (client) => {
+  const result = await transactionModel.getAllTransactions(client);
+  return result;
+};
+
+
+module.exports = { writeCostToDatabase, writeRoiToDatabase, writeUsageToDatabase, getAllCostInfo, getAllRoiInfo, getAllUsageInfo, getAllTransactionsInfo };

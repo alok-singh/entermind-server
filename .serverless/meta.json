@@ -1,0 +1,5141 @@
+{
+  "/Users/alok/Workspace/entermind/entermind-server/serverless.yml": {
+    "versionFramework": "4.22.0",
+    "servicePath": "/Users/alok/Workspace/entermind/entermind-server/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "entermind-server",
+      "variablesResolutionMode": "20210326",
+      "custom": {
+        "stage": "dev",
+        "settings": {
+          "dev": {
+            "STAGE": "dev",
+            "NODE_ENV": "develop"
+          },
+          "stg": {
+            "STAGE": "dev",
+            "NODE_ENV": "staging"
+          },
+          "prod": {
+            "STAGE": "dev",
+            "NODE_ENV": "production"
+          }
+        }
+      },
+      "plugins": [
+        "serverless-offline"
+      ],
+      "provider": {
+        "name": "aws",
+        "region": "ap-southeast-1",
+        "runtime": "nodejs18.x",
+        "environment": {
+          "STAGE": "dev",
+          "NODE_ENV": "develop"
+        },
+        "lambdaHashingVersion": "20201221",
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "xray:PutTraceSegments",
+                  "xray:PutTelemetryRecords"
+                ],
+                "Resource": [
+                  "*"
+                ]
+              }
+            ]
+          }
+        },
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "HelloLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-hello"
+              }
+            },
+            "GetCostLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-getCost"
+              }
+            },
+            "CreateCostLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-createCost"
+              }
+            },
+            "CreateRoiLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-createRoi"
+              }
+            },
+            "CreateUsageLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-createUsage"
+              }
+            },
+            "GetRoiLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-getRoi"
+              }
+            },
+            "GetUsageLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-getUsage"
+              }
+            },
+            "GetTransactionLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-getTransaction"
+              }
+            },
+            "UploadFileLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/entermind-server-dev-uploadFile"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "entermind-server",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/entermind-server-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/entermind-server-dev*:*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "xray:PutTraceSegments",
+                            "xray:PutTelemetryRecords"
+                          ],
+                          "Resource": [
+                            "*"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "entermind-server",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HelloLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.hello",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-hello",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "HelloLogGroup"
+              ]
+            },
+            "GetCostLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.getCost",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-getCost",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "GetCostLogGroup"
+              ]
+            },
+            "CreateCostLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.createCost",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-createCost",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "CreateCostLogGroup"
+              ]
+            },
+            "CreateRoiLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.createRoi",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-createRoi",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "CreateRoiLogGroup"
+              ]
+            },
+            "CreateUsageLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.createUsage",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-createUsage",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "CreateUsageLogGroup"
+              ]
+            },
+            "GetRoiLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.getRoi",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-getRoi",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "GetRoiLogGroup"
+              ]
+            },
+            "GetUsageLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.getUsage",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-getUsage",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "GetUsageLogGroup"
+              ]
+            },
+            "GetTransactionLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.getTransaction",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-getTransaction",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "GetTransactionLogGroup"
+              ]
+            },
+            "UploadFileLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                  "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+                },
+                "Handler": "src/index.uploadFile",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "entermind-server-dev-uploadFile",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "TracingConfig": {
+                  "Mode": "Active"
+                },
+                "Environment": {
+                  "Variables": {
+                    "STAGE": "dev",
+                    "NODE_ENV": "develop"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "UploadFileLogGroup"
+              ]
+            },
+            "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "HelloLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetCostLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "CreateCostLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "CreateRoiLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "CreateUsageLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetRoiLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetUsageLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetTransactionLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "UploadFileLambdaFunction"
+                },
+                "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+              }
+            },
+            "ApiGatewayRestApi": {
+              "Type": "AWS::ApiGateway::RestApi",
+              "Properties": {
+                "Name": "dev-entermind-server",
+                "EndpointConfiguration": {
+                  "Types": [
+                    "EDGE"
+                  ]
+                },
+                "Policy": ""
+              }
+            },
+            "ApiGatewayResourceV1": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Fn::GetAtt": [
+                    "ApiGatewayRestApi",
+                    "RootResourceId"
+                  ]
+                },
+                "PathPart": "v1",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1Hello": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "hello",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1GetDashcost": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "get-cost",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1CreateDashcost": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "create-cost",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1CreateDashroi": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "create-roi",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1CreateDashusage": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "create-usage",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1GetDashroi": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "get-roi",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1GetDashusage": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "get-usage",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1GetDashtransactions": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "get-transactions",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceV1UploadDashfile": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceV1"
+                },
+                "PathPart": "upload-file",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodV1CreateDashcostOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1CreateDashcost"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodV1HelloGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1Hello"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "HelloLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "HelloLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1GetDashcostGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1GetDashcost"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetCostLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetCostLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1CreateDashcostPost": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "POST",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1CreateDashcost"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "CreateCostLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "CreateCostLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1CreateDashroiPost": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "POST",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1CreateDashroi"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "CreateRoiLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "CreateRoiLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1CreateDashusagePost": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "POST",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1CreateDashusage"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "CreateUsageLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "CreateUsageLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1GetDashroiGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1GetDashroi"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetRoiLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetRoiLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1GetDashusageGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1GetDashusage"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetUsageLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetUsageLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1GetDashtransactionsGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1GetDashtransactions"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetTransactionLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetTransactionLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodV1UploadDashfilePost": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "POST",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceV1UploadDashfile"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "UploadFileLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "UploadFileLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayDeployment1762260675351": {
+              "Type": "AWS::ApiGateway::Deployment",
+              "Properties": {
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "StageName": "dev"
+              },
+              "DependsOn": [
+                "ApiGatewayMethodV1CreateDashcostOptions",
+                "ApiGatewayMethodV1HelloGet",
+                "ApiGatewayMethodV1GetDashcostGet",
+                "ApiGatewayMethodV1CreateDashcostPost",
+                "ApiGatewayMethodV1CreateDashroiPost",
+                "ApiGatewayMethodV1CreateDashusagePost",
+                "ApiGatewayMethodV1GetDashroiGet",
+                "ApiGatewayMethodV1GetDashusageGet",
+                "ApiGatewayMethodV1GetDashtransactionsGet",
+                "ApiGatewayMethodV1UploadDashfilePost"
+              ]
+            },
+            "HelloLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "HelloLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetCostLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetCostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "CreateCostLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "CreateCostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "CreateRoiLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "CreateRoiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "CreateUsageLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "CreateUsageLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetRoiLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetRoiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetUsageLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetUsageLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetTransactionLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetTransactionLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "UploadFileLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "UploadFileLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "Export": {
+                "Name": "sls-entermind-server-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "HelloLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-HelloLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetCostLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-GetCostLambdaFunctionQualifiedArn"
+              }
+            },
+            "CreateCostLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-CreateCostLambdaFunctionQualifiedArn"
+              }
+            },
+            "CreateRoiLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-CreateRoiLambdaFunctionQualifiedArn"
+              }
+            },
+            "CreateUsageLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-CreateUsageLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetRoiLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-GetRoiLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetUsageLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-GetUsageLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetTransactionLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-GetTransactionLambdaFunctionQualifiedArn"
+              }
+            },
+            "UploadFileLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs"
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-UploadFileLambdaFunctionQualifiedArn"
+              }
+            },
+            "ServiceEndpoint": {
+              "Description": "URL of the service endpoint",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/dev"
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-entermind-server-dev-ServiceEndpoint"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "functions": {
+        "hello": {
+          "handler": "src/index.hello",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "get",
+                "path": "v1/hello",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-hello",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU"
+        },
+        "getCost": {
+          "handler": "src/index.getCost",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "get",
+                "path": "v1/get-cost",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-getCost",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A"
+        },
+        "createCost": {
+          "handler": "src/index.createCost",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "post",
+                "path": "v1/create-cost",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "POST"
+                  ],
+                  "headers": [
+                    "Authorization",
+                    "Content-Type"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-createCost",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E"
+        },
+        "createRoi": {
+          "handler": "src/index.createRoi",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "post",
+                "path": "v1/create-roi",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-createRoi",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg"
+        },
+        "createUsage": {
+          "handler": "src/index.createUsage",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "post",
+                "path": "v1/create-usage",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-createUsage",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA"
+        },
+        "getRoi": {
+          "handler": "src/index.getRoi",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "get",
+                "path": "v1/get-roi",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-getRoi",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U"
+        },
+        "getUsage": {
+          "handler": "src/index.getUsage",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "get",
+                "path": "v1/get-usage",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-getUsage",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI"
+        },
+        "getTransaction": {
+          "handler": "src/index.getTransaction",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "get",
+                "path": "v1/get-transactions",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-getTransaction",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg"
+        },
+        "uploadFile": {
+          "handler": "src/index.uploadFile",
+          "tracing": true,
+          "events": [
+            {
+              "http": {
+                "method": "post",
+                "path": "v1/upload-file",
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "entermind-server-dev-uploadFile",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "region": "ap-southeast-1",
+      "runtime": "nodejs18.x",
+      "environment": {
+        "STAGE": "dev",
+        "NODE_ENV": "develop"
+      },
+      "lambdaHashingVersion": "20201221",
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Resource": [
+                "*"
+              ]
+            }
+          ]
+        }
+      },
+      "stage": "dev",
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "HelloLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-hello"
+            }
+          },
+          "GetCostLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-getCost"
+            }
+          },
+          "CreateCostLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-createCost"
+            }
+          },
+          "CreateRoiLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-createRoi"
+            }
+          },
+          "CreateUsageLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-createUsage"
+            }
+          },
+          "GetRoiLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-getRoi"
+            }
+          },
+          "GetUsageLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-getUsage"
+            }
+          },
+          "GetTransactionLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-getTransaction"
+            }
+          },
+          "UploadFileLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/entermind-server-dev-uploadFile"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "entermind-server",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/entermind-server-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/entermind-server-dev*:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "xray:PutTraceSegments",
+                          "xray:PutTelemetryRecords"
+                        ],
+                        "Resource": [
+                          "*"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "entermind-server",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "HelloLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.hello",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-hello",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "HelloLogGroup"
+            ]
+          },
+          "GetCostLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.getCost",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-getCost",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetCostLogGroup"
+            ]
+          },
+          "CreateCostLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.createCost",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-createCost",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "CreateCostLogGroup"
+            ]
+          },
+          "CreateRoiLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.createRoi",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-createRoi",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "CreateRoiLogGroup"
+            ]
+          },
+          "CreateUsageLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.createUsage",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-createUsage",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "CreateUsageLogGroup"
+            ]
+          },
+          "GetRoiLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.getRoi",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-getRoi",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetRoiLogGroup"
+            ]
+          },
+          "GetUsageLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.getUsage",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-getUsage",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetUsageLogGroup"
+            ]
+          },
+          "GetTransactionLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.getTransaction",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-getTransaction",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetTransactionLogGroup"
+            ]
+          },
+          "UploadFileLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+                "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+              },
+              "Handler": "src/index.uploadFile",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "entermind-server-dev-uploadFile",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev",
+                  "NODE_ENV": "develop"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "UploadFileLogGroup"
+            ]
+          },
+          "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "HelloLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetCostLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateCostLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateRoiLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateUsageLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetRoiLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetUsageLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetTransactionLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "UploadFileLambdaFunction"
+              },
+              "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "dev-entermind-server",
+              "EndpointConfiguration": {
+                "Types": [
+                  "EDGE"
+                ]
+              },
+              "Policy": ""
+            }
+          },
+          "ApiGatewayResourceV1": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "v1",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1Hello": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "hello",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1GetDashcost": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "get-cost",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1CreateDashcost": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "create-cost",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1CreateDashroi": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "create-roi",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1CreateDashusage": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "create-usage",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1GetDashroi": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "get-roi",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1GetDashusage": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "get-usage",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1GetDashtransactions": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "get-transactions",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1UploadDashfile": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "upload-file",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodV1CreateDashcostOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1CreateDashcost"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodV1HelloGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1Hello"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "HelloLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "HelloLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1GetDashcostGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1GetDashcost"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetCostLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetCostLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1CreateDashcostPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1CreateDashcost"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateCostLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "CreateCostLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1CreateDashroiPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1CreateDashroi"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateRoiLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "CreateRoiLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1CreateDashusagePost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1CreateDashusage"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateUsageLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "CreateUsageLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1GetDashroiGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1GetDashroi"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetRoiLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetRoiLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1GetDashusageGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1GetDashusage"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetUsageLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetUsageLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1GetDashtransactionsGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1GetDashtransactions"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetTransactionLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetTransactionLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodV1UploadDashfilePost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1UploadDashfile"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "UploadFileLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "UploadFileLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1762260675351": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodV1CreateDashcostOptions",
+              "ApiGatewayMethodV1HelloGet",
+              "ApiGatewayMethodV1GetDashcostGet",
+              "ApiGatewayMethodV1CreateDashcostPost",
+              "ApiGatewayMethodV1CreateDashroiPost",
+              "ApiGatewayMethodV1CreateDashusagePost",
+              "ApiGatewayMethodV1GetDashroiGet",
+              "ApiGatewayMethodV1GetDashusageGet",
+              "ApiGatewayMethodV1GetDashtransactionsGet",
+              "ApiGatewayMethodV1UploadDashfilePost"
+            ]
+          },
+          "HelloLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "HelloLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetCostLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetCostLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "CreateCostLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateCostLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "CreateRoiLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateRoiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "CreateUsageLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateUsageLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetRoiLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetRoiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetUsageLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetUsageLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetTransactionLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetTransactionLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "UploadFileLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "UploadFileLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+            "Export": {
+              "Name": "sls-entermind-server-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "HelloLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-HelloLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetCostLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-GetCostLambdaFunctionQualifiedArn"
+            }
+          },
+          "CreateCostLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-CreateCostLambdaFunctionQualifiedArn"
+            }
+          },
+          "CreateRoiLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-CreateRoiLambdaFunctionQualifiedArn"
+            }
+          },
+          "CreateUsageLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-CreateUsageLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetRoiLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-GetRoiLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetUsageLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-GetUsageLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetTransactionLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-GetTransactionLambdaFunctionQualifiedArn"
+            }
+          },
+          "UploadFileLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs"
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-UploadFileLambdaFunctionQualifiedArn"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/dev"
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-entermind-server-dev-ServiceEndpoint"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "service: entermind-server # NOTE: update this with your service name\n\nvariablesResolutionMode: 20210326\n\ncustom:\n  stage: dev\n  settings:\n    dev:\n      STAGE: ${self:custom.stage}\n      NODE_ENV: \"develop\"\n    stg:\n      STAGE: ${self:custom.stage}\n      NODE_ENV: \"staging\"\n    prod:\n      STAGE: ${self:custom.stage}\n      NODE_ENV: \"production\"\n\nplugins:\n  - serverless-offline\n\nprovider:\n  name: aws\n  region: ap-southeast-1\n  runtime: nodejs18.x\n  environment: ${self:custom.settings.${self:custom.stage}}\n  lambdaHashingVersion: 20201221\n\n  iam:\n    role:\n      statements:\n        - Effect: \"Allow\"\n          Action:\n            - \"xray:PutTraceSegments\"\n            - \"xray:PutTelemetryRecords\"\n          Resource:\n            - \"*\"\n\nfunctions:\n  hello:\n    handler: src/index.hello\n    tracing: true\n    events:\n      - http:\n          method: get\n          path: v1/hello\n  getCost:\n    handler: src/index.getCost\n    tracing: true\n    events:\n      - http:\n          method: get\n          path: v1/get-cost\n  createCost:\n    handler: src/index.createCost\n    tracing: true\n    events:\n      - http:\n          method: post\n          path: v1/create-cost\n          cors:\n            origin: \"*\"\n            headers:\n              - \"Authorization\"\n              - \"Content-Type\"\n  createRoi:\n    handler: src/index.createRoi\n    tracing: true\n    events:\n      - http:\n          method: post\n          path: v1/create-roi\n  createUsage:\n    handler: src/index.createUsage\n    tracing: true\n    events:\n      - http:\n          method: post\n          path: v1/create-usage\n  getRoi:\n    handler: src/index.getRoi\n    tracing: true\n    events:\n      - http:\n          method: get\n          path: v1/get-roi\n  getUsage:\n    handler: src/index.getUsage\n    tracing: true\n    events:\n      - http:\n          method: get\n          path: v1/get-usage\n  getTransaction:\n    handler: src/index.getTransaction\n    tracing: true\n    events:\n      - http:\n          method: get\n          path: v1/get-transactions\n  uploadFile:\n    handler: src/index.uploadFile\n    tracing: true\n    events:\n      - http:\n          method: post\n          path: v1/upload-file\n\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "orgId": "799f9517-0d06-4c04-801a-3e021a82b059",
+    "orgName": "alok7131serverless",
+    "userId": "SWyxW5HyM34dXz2fFt",
+    "userName": "alok7131serverless",
+    "serviceProviderAwsAccountId": "412831748323",
+    "serviceProviderAwsCfStackName": "entermind-server-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-southeast-1:412831748323:stack/entermind-server-dev/0341f470-b97d-11f0-9e67-0a330bb29ab7",
+    "serviceProviderAwsCfStackCreated": "2025-11-04T12:51:43.290Z",
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "CreateCostLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-createCost:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-CreateCostLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetRoiLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-getRoi:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-GetRoiLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetCostLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-getCost:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-GetCostLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "HelloLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-hello:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-HelloLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "UploadFileLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-uploadFile:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-UploadFileLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetUsageLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-getUsage:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-GetUsageLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "CreateUsageLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-createUsage:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-CreateUsageLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetTransactionLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-getTransaction:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-GetTransactionLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://s85j4uvfo1.execute-api.ap-southeast-1.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-entermind-server-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+        "ExportName": "sls-entermind-server-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "CreateRoiLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-1:412831748323:function:entermind-server-dev-createRoi:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-entermind-server-dev-CreateRoiLambdaFunctionQualifiedArn"
+      }
+    ],
+    "compiledCloudFormationTemplate": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for this Serverless application",
+      "Resources": {
+        "HelloLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-hello"
+          }
+        },
+        "GetCostLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-getCost"
+          }
+        },
+        "CreateCostLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-createCost"
+          }
+        },
+        "CreateRoiLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-createRoi"
+          }
+        },
+        "CreateUsageLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-createUsage"
+          }
+        },
+        "GetRoiLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-getRoi"
+          }
+        },
+        "GetUsageLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-getUsage"
+          }
+        },
+        "GetTransactionLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-getTransaction"
+          }
+        },
+        "UploadFileLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/entermind-server-dev-uploadFile"
+          }
+        },
+        "IamRoleLambdaExecution": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Policies": [
+              {
+                "PolicyName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "entermind-server",
+                      "dev",
+                      "lambda"
+                    ]
+                  ]
+                },
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogStream",
+                        "logs:CreateLogGroup",
+                        "logs:TagResource"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/entermind-server-dev*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/entermind-server-dev*:*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "xray:PutTraceSegments",
+                        "xray:PutTelemetryRecords"
+                      ],
+                      "Resource": [
+                        "*"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "Path": "/",
+            "RoleName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "entermind-server",
+                  "dev",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "lambdaRole"
+                ]
+              ]
+            }
+          }
+        },
+        "HelloLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.hello",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-hello",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "HelloLogGroup"
+          ]
+        },
+        "GetCostLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.getCost",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-getCost",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "GetCostLogGroup"
+          ]
+        },
+        "CreateCostLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.createCost",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-createCost",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "CreateCostLogGroup"
+          ]
+        },
+        "CreateRoiLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.createRoi",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-createRoi",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "CreateRoiLogGroup"
+          ]
+        },
+        "CreateUsageLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.createUsage",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-createUsage",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "CreateUsageLogGroup"
+          ]
+        },
+        "GetRoiLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.getRoi",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-getRoi",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "GetRoiLogGroup"
+          ]
+        },
+        "GetUsageLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.getUsage",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-getUsage",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "GetUsageLogGroup"
+          ]
+        },
+        "GetTransactionLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.getTransaction",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-getTransaction",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "GetTransactionLogGroup"
+          ]
+        },
+        "UploadFileLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+              "S3Key": "serverless/entermind-server/dev/1762260695410-2025-11-04T12:51:35.410Z/entermind-server.zip"
+            },
+            "Handler": "src/index.uploadFile",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "entermind-server-dev-uploadFile",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "TracingConfig": {
+              "Mode": "Active"
+            },
+            "Environment": {
+              "Variables": {
+                "STAGE": "dev",
+                "NODE_ENV": "develop"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "UploadFileLogGroup"
+          ]
+        },
+        "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "HelloLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetCostLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "CreateCostLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "CreateRoiLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "CreateUsageLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetRoiLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetUsageLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetTransactionLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "UploadFileLambdaFunction"
+            },
+            "CodeSha256": "R021m9l1Jk8L5XmhzVyxkxmougr/yyCh0deX4BwvArk="
+          }
+        },
+        "ApiGatewayRestApi": {
+          "Type": "AWS::ApiGateway::RestApi",
+          "Properties": {
+            "Name": "dev-entermind-server",
+            "EndpointConfiguration": {
+              "Types": [
+                "EDGE"
+              ]
+            },
+            "Policy": ""
+          }
+        },
+        "ApiGatewayResourceV1": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Fn::GetAtt": [
+                "ApiGatewayRestApi",
+                "RootResourceId"
+              ]
+            },
+            "PathPart": "v1",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1Hello": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "hello",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1GetDashcost": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "get-cost",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1CreateDashcost": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "create-cost",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1CreateDashroi": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "create-roi",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1CreateDashusage": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "create-usage",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1GetDashroi": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "get-roi",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1GetDashusage": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "get-usage",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1GetDashtransactions": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "get-transactions",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceV1UploadDashfile": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceV1"
+            },
+            "PathPart": "upload-file",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodV1CreateDashcostOptions": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "AuthorizationType": "NONE",
+            "HttpMethod": "OPTIONS",
+            "MethodResponses": [
+              {
+                "StatusCode": "200",
+                "ResponseParameters": {
+                  "method.response.header.Access-Control-Allow-Origin": true,
+                  "method.response.header.Access-Control-Allow-Headers": true,
+                  "method.response.header.Access-Control-Allow-Methods": true
+                },
+                "ResponseModels": {}
+              }
+            ],
+            "RequestParameters": {},
+            "Integration": {
+              "Type": "MOCK",
+              "RequestTemplates": {
+                "application/json": "{statusCode:200}"
+              },
+              "ContentHandling": "CONVERT_TO_TEXT",
+              "IntegrationResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                    "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                  },
+                  "ResponseTemplates": {
+                    "application/json": ""
+                  }
+                }
+              ]
+            },
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1CreateDashcost"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodV1HelloGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1Hello"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "HelloLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "HelloLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1GetDashcostGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1GetDashcost"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetCostLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetCostLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1CreateDashcostPost": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "POST",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1CreateDashcost"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "CreateCostLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "CreateCostLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1CreateDashroiPost": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "POST",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1CreateDashroi"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "CreateRoiLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "CreateRoiLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1CreateDashusagePost": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "POST",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1CreateDashusage"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "CreateUsageLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "CreateUsageLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1GetDashroiGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1GetDashroi"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetRoiLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetRoiLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1GetDashusageGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1GetDashusage"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetUsageLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetUsageLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1GetDashtransactionsGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1GetDashtransactions"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetTransactionLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetTransactionLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodV1UploadDashfilePost": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "POST",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceV1UploadDashfile"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "UploadFileLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "UploadFileLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayDeployment1762260675351": {
+          "Type": "AWS::ApiGateway::Deployment",
+          "Properties": {
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "StageName": "dev"
+          },
+          "DependsOn": [
+            "ApiGatewayMethodV1CreateDashcostOptions",
+            "ApiGatewayMethodV1HelloGet",
+            "ApiGatewayMethodV1GetDashcostGet",
+            "ApiGatewayMethodV1CreateDashcostPost",
+            "ApiGatewayMethodV1CreateDashroiPost",
+            "ApiGatewayMethodV1CreateDashusagePost",
+            "ApiGatewayMethodV1GetDashroiGet",
+            "ApiGatewayMethodV1GetDashusageGet",
+            "ApiGatewayMethodV1GetDashtransactionsGet",
+            "ApiGatewayMethodV1UploadDashfilePost"
+          ]
+        },
+        "HelloLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "HelloLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetCostLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetCostLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "CreateCostLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "CreateCostLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "CreateRoiLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "CreateRoiLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "CreateUsageLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "CreateUsageLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetRoiLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetRoiLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetUsageLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetUsageLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetTransactionLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetTransactionLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "UploadFileLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "UploadFileLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "Outputs": {
+        "ServerlessDeploymentBucketName": {
+          "Value": "serverless-framework-deployments-ap-southeast-1-c58550d0-68a3",
+          "Export": {
+            "Name": "sls-entermind-server-dev-ServerlessDeploymentBucketName"
+          }
+        },
+        "HelloLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "HelloLambdaVersion0EwgyQJ7HRZ7KZnjLq1po00BYd08DuLDLGDjyG5QBU"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-HelloLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetCostLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetCostLambdaVersiona91yyrRKCC3OMB1lFq1UDzUatqlAx2fOgFsFVJLt4A"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-GetCostLambdaFunctionQualifiedArn"
+          }
+        },
+        "CreateCostLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "CreateCostLambdaVersionFWesvwDoEoQeAm1ktzih675uhTgyyzUjlDWpP20E"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-CreateCostLambdaFunctionQualifiedArn"
+          }
+        },
+        "CreateRoiLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "CreateRoiLambdaVersionFLA78MtuiAOaorBmmWpxzVwZQu7qEuW9xG0Vn2LoMg"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-CreateRoiLambdaFunctionQualifiedArn"
+          }
+        },
+        "CreateUsageLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "CreateUsageLambdaVersionMUoNZeN3pFQzOxHwrd89coG7mLZenALeBsxgUCOZUjA"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-CreateUsageLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetRoiLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetRoiLambdaVersionThJHdfbW31jgGgAI3RoAFGqIEui0uHmzTBhHDwGM6U"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-GetRoiLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetUsageLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetUsageLambdaVersionZ6qCi99fmR5hTdd4DJXOQJoKLVMnLvvr1dYhm7dDeI"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-GetUsageLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetTransactionLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetTransactionLambdaVersionjoB1pYX3oMKFAt3n3QJBDNEslGteO8dWTK9MfQcjxg"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-GetTransactionLambdaFunctionQualifiedArn"
+          }
+        },
+        "UploadFileLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "UploadFileLambdaVersionkzNtgldbpEXNpTLYJ1qbLgxhFLhIdPs5Zz0bRWFs"
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-UploadFileLambdaFunctionQualifiedArn"
+          }
+        },
+        "ServiceEndpoint": {
+          "Description": "URL of the service endpoint",
+          "Value": {
+            "Fn::Join": [
+              "",
+              [
+                "https://",
+                {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                ".execute-api.",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ".",
+                {
+                  "Ref": "AWS::URLSuffix"
+                },
+                "/dev"
+              ]
+            ]
+          },
+          "Export": {
+            "Name": "sls-entermind-server-dev-ServiceEndpoint"
+          }
+        }
+      }
+    }
+  }
+}

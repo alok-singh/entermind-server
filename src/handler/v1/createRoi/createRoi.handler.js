@@ -1,5 +1,4 @@
-const { roiFileName } = require('@config/vars');
-const { OK, writeDatabaseInfo } = require('@utils/helper');
+const { OK, writeRoiToDatabase } = require('@utils/helper');
 const httpStatus = require('http-status');
 
 /**
@@ -10,7 +9,7 @@ exports.createRoi = async (event) => {
   try {
     const { body } = event;
     const { client, data } = body;
-    await writeDatabaseInfo(client, roiFileName, data);
+    await writeRoiToDatabase(client, data);
     return OK("OK", { message: "Created ROI successfully" });
   } catch (error) {
     console.log(error);
