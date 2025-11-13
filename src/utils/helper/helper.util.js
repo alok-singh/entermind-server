@@ -6,7 +6,11 @@ const OK = (responseMessage = 'OK', response = {}, statusCode = httpStatus.OK) =
     responseCode: statusCode,
     responseMessage,
     response
-  }, null, 2)
+  }, null, 2),
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': true
+  }
 });
 
 module.exports = {

@@ -12,10 +12,10 @@ const allFields = [
 ];
 
 const costModel = {
-  async getAllCosts(client) {
+  async getAllCosts(client, fields) {
     try {
       const connection = await createConnectionToDb();
-      const [rows] = await connection.execute(`SELECT * FROM ${costTableName} WHERE client = "${client}" ORDER BY startDate DESC`);
+      const [rows] = await connection.execute(`SELECT ${fields ? fields : '*'} FROM ${costTableName} WHERE client = "${client}" ORDER BY startDate DESC`);
       await closeConnection(connection);
       return rows;
     } catch (error) {

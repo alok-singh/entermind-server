@@ -70,7 +70,8 @@
     "node-sanitizer": "^1.0.5",
     "ollama": "^0.6.2",
     "pdfreader": "^3.0.8",
-    "serverless-plugin-tracing": "^2.0.0"
+    "serverless-plugin-tracing": "^2.0.0",
+    "simple-statistics": "^7.8.8"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",

@@ -27,8 +27,8 @@ const writeUsageToDatabase = async (client, usageList) => {
   await Promise.all([usageModel.createUsage(transactionId, client, usageList), transactionModel.createTransaction(transactionData)]);
 };
 
-const getAllCostInfo = async (client) => {
-  const result = await costModel.getAllCosts(client);
+const getAllCostInfo = async (client, fields) => {
+  const result = await costModel.getAllCosts(client, fields);
   return result;
 };
 
