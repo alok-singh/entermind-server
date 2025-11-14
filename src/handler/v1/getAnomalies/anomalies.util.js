@@ -1,4 +1,4 @@
-const { median } = require('simple-statistics');
+const { average } = require('simple-statistics');
 
 /**
  * 
@@ -17,17 +17,16 @@ const computeCostAnomalies = (records) => {
   // Group costs by category
   const categoryCosts = records.reduce((acc, row) => {
     const category = cleanString(row.category);
-    const cost = parseFloat(row.monthlyCost);
+    const cost = row.monthlyCost ? parseFloat(row.monthlyCost) : 0;
 
     acc[category] = acc[category] ? acc[category] : [];
     acc[category].push(cost);
     return acc;
   }, {});
 
-
   // Compute medians
   const categoryMedians = Object.keys(categoryCosts).reduce((acc, category) => {
-    acc[category] = median(categoryCosts[category]);
+    acc[category] = average(categoryCosts[category]);
     return acc;
   }, {});
 
@@ -38,7 +37,7 @@ const computeCostAnomalies = (records) => {
     const category = cleanString(row.category);
     const actualCost = parseFloat(row.monthlyCost);
     const normalCost = categoryMedians[category];
-    if (actualCost > normalCost * 2) {
+    if (normalCost !== 0 && actualCost > normalCost * 2) {
       list.push({
         category,
         startDate: row.startDate,

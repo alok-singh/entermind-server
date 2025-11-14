@@ -16,7 +16,7 @@ const sendMonitoringLogs = async (request) => {
       response: body,
       statusCode: response.statusCode
     };
-    logger.info('API Request', logData);
+    // logger.info('API Request', logData);
   } catch (error) {
     logger.error('Monitoring error', error);
   }
